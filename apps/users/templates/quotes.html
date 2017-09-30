@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Quotes</title>
+        <style>
+            #wrapper{
+                height: 20em;
+                width: 50em;
+                display: flex;
+            }
+
+            #quotes, #favorites{
+                border:1px solid black;
+                width: 20em;
+                height: 20em;
+                overflow: scroll;
+                margin: 1em;
+            }
+
+            #quote{
+                border:1px solid black;
+                margin: 1em;
+            }
+        
+            #textbox{
+                height: 10em;
+                width: 10em;
+            }
+        </style>
+    </head>
+
+    <body>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <a href='/logout'>Logout</a>
+        <h1>Welcome, {{request.session.name}}</h1>
+        
+        <div id='wrapper'>
+            <div>
+                Quotable quotes:
+                <div id='quotes'>
+                    {% for quote in quotes %}
+                        {% if quote not in favorites %}
+                            <div id='quote'>
+                                <p>{{quote.quotedby}}: {{quote.message}}</p>
+
+                                Posted by: <a href="users/{{quote.user.id}}">{{quote.user.name}}</a>
+                                
+                                <form action='add_favorite/{{quote.id}}'>
+                                    <button type='submit'>Add to My List</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div>
+                Your favorites:
+                <div id='favorites'>
+                    {% for quote in favorites %}
+                        <div id='quote'>
+                            <p>{{quote.quotedby}}: {{quote.message}}</p>
+
+                            Posted by:<a href="users/{{quote.user.id}}">{{quote.user.name}}</a>
+                            
+                            <form action='remove_favorite/{{quote.id}}'>
+                                <button type='submit'>Remove from My List</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                Contribute a quote:
+                <form action='add' method='post'>
+                    {% csrf_token %}
+                    <p>Quoted by: <input type='text' name='quotedby'></p>
+                    
+                    <p>Message: <input type='textarea' name='message' id='textbox'></p>
+                    <input type='submit' value='Submit'>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

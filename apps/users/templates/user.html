@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Quotes</title>
+        <style>
+            #red{
+                color:red;
+            }
+        </style>
+    </head>
+
+    <body>
+        <a href='/quotes'>Dashbord</a>
+        <a href='/logout'>Logout</a>
+
+        <p>Posts by {{username}}</p>
+        <p>Count: {{count}}</p>
+
+        {% for quote in quotes %}
+            <p><span id='red'>{{quote.quotedby}}</span>: {{quote.message}}</p>
+        {% endfor %}
+    </body>
+</html>
