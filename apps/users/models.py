@@ -38,7 +38,7 @@ class UserManager(models.Manager):
             string += "| Please enter your date of birth |"
         else:
             compare_time_start = datetime.datetime.strptime(requestPost['dob'], '%Y-%m-%d') - datetime.datetime.today()
-            if compare_time_start.total_seconds() > 0:
+            if compare_time_start.total_seconds() < 0:
                 string += "| Please enter a valid date of birth |"
         return string
 
